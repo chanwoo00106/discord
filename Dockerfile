@@ -7,10 +7,10 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app/
 
 # RUN npm install
-RUN npm install
+RUN yarn
 
 # Build project
-RUN npm run build
+RUN yarn build
 
 # Start bot
 CMD [ "node", "build/main.js" ]

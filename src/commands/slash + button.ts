@@ -21,7 +21,7 @@ class buttonExample {
     const helloBtn = new MessageButton()
       .setLabel("Hello")
       .setEmoji("👋")
-      .setStyle("PRIMARY")
+      .setStyle("SUCCESS")
       .setCustomId("hello-btn");
 
     const row = new MessageActionRow().addComponents(helloBtn);
