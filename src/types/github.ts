@@ -1,4 +1,4 @@
-export interface GithubType {
+export interface Owner {
   login: string;
   id: number;
   node_id: string;
@@ -17,6 +17,9 @@ export interface GithubType {
   received_events_url: string;
   type: string;
   site_admin: boolean;
+}
+
+export interface GithubType extends Owner {
   name: string | null;
   company: string | null;
   blog: string;
