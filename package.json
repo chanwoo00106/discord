@@ -38,7 +38,6 @@
     "@discordx/pagination": "^2.0.0",
     "@discordx/utilities": "^3.4.2",
     "@koa/router": "^10.1.1",
-    "apollo-boost": "^0.4.9",
     "discord.js": "^13.6.0",
     "discordx": "^9.3.2",
     "dotenv": "^16.0.0",

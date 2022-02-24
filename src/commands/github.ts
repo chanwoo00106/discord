@@ -1,18 +1,8 @@
 import { CommandInteraction, MessageEmbed } from "discord.js";
 import { Discord, Slash, SlashGroup, SlashOption } from "discordx";
-import { GithubType, UserInfoI } from "../types/github";
-import { Repo } from "../types/repo";
-import dotenv from "dotenv";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
-import { UserInfo } from "../query/user";
-
-dotenv.config();
+import { UserInfoI } from "../types/github";
+import { Repos } from "../types/repo";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new ApolloClient({
   uri: "https://api.github.com/graphql",
@@ -22,9 +12,43 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+export function UserInfo(id: string): string {
+  return `query {
+	user(login:"${id}") {
+    name
+    login
+    bio
+    company
+    avatarUrl
+    location
+    url
+	}
+}`;
+}
+
+export function Contribution(id: string) {
+  return `query {
+  user(login: "${id}") {
+    login
+    name
+    contributionsCollection {
+      contributionCalendar{
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            date
+          }
+        }
+      }
+    }
+  }
+}`;
+}
+
 @Discord()
 @SlashGroup({ name: "github", description: "github 정보 긁어오기" })
-abstract class AppDiscord {
+export abstract class GithubDiscord {
   @Slash("user")
   @SlashGroup("github")
   async github(
@@ -70,24 +94,17 @@ abstract class AppDiscord {
     @SlashOption("id2", { description: "github id" }) id2: string,
     interaction: CommandInteraction
   ) {
-    // const { data }: { data: Repo[] } = await api.get(
-    //   `/users/${id}/repos?per_page=4&sort=updated`
-    // );
-    // const embeds = new MessageEmbed()
-    //   .setTitle(`${id}의 repos`)
-    //   .setThumbnail(data[0].owner.avatar_url)
-    //   .setColor("#dff9fb")
-    //   .addFields(
-    //     data.map((repo) => ({
-    //       name: repo.name,
-    //       value: repo.html_url,
-    //     }))
-    //   )
-    //   .setTimestamp()
-    //   .setFooter({
-    //     text: data[0].owner.login,
-    //     iconURL: data[0].owner.avatar_url,
-    //   });
-    // interaction.reply({ embeds: [embeds] });
+    const user1: Repos = await client.query({
+      query: gql`
+        ${Contribution(id1)}
+      `,
+    });
+    const user2: Repos = await client.query({
+      query: gql`
+        ${Contribution(id2)}
+      `,
+    });
+
+    console.log(user1.data.user.name);
   }
 }

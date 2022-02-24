@@ -3,6 +3,9 @@ import { Intents, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
 import { dirname, importx } from "@discordx/importer";
 import { Koa } from "@discordx/koa";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const client = new Client({
   simpleCommand: {
@@ -24,13 +27,10 @@ client.once("ready", async () => {
   await client.guilds.fetch();
 
   // init all application commands
-  await client.initApplicationCommands({
-    guild: { log: true },
-    global: { log: true },
-  });
+  await client.initApplicationCommands();
 
   // init permissions; enabled log to see changes
-  await client.initApplicationPermissions(true);
+  await client.initApplicationPermissions();
 
   // uncomment this line to clear all guild commands,
   // useful when moving to global commands from guild commands
