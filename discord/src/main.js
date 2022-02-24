@@ -1,20 +1,55 @@
 import { Client } from "discord.js";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v10";
 import dotenv from "dotenv";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 dotenv.config();
 
+const commands = [
+  new SlashCommandBuilder()
+    .setName("user")
+    .setDescription("You can search for users on github.")
+    .addStringOption((str) => str.setName("id").setDescription("github id")),
+  new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Replies with pong!"),
+].map((command) => command.toJSON());
+
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+
+const rest = new REST({ version: "10" }).setToken(process.env.BOT_TOKEN);
 
 client.on("ready", () => {
   console.log(`${client.user.tag}에 로그인하였습니다!`);
-  client.guilds.cache.get();
+
+  (async () => {
+    try {
+      if (process.env.ENV === "production") {
+        await rest.put(Routes.applicationCommands(client.user.id), {
+          body: commands,
+        });
+      } else {
+        await rest.put(
+          Routes.applicationGuildCommands(client.user.id, process.env.GUILD_ID),
+          {
+            body: commands,
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  })();
 });
 
-client.on("interactionCreate", async (interaction) => {});
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
 
-client.on("message", (msg) => {
-  if (msg.content === "핑") {
-    msg.reply("퐁!");
+  const { commandName } = interaction;
+
+  if (commandName === "ping") {
+    await interaction.reply("Pong!");
   }
 });
 
