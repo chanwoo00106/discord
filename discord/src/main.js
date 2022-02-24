@@ -3,6 +3,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import dotenv from "dotenv";
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { user } from "./lib/command";
 
 dotenv.config();
 
@@ -46,10 +47,13 @@ client.on("ready", () => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  const { commandName } = interaction;
+  const { commandName, options } = interaction;
 
   if (commandName === "ping") {
     await interaction.reply("Pong!");
+  } else if (commandName === "user") {
+    const embeds = await user(options.getString("id"));
+    interaction.reply({ embeds: [embeds] });
   }
 });
 

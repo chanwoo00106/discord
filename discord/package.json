@@ -7,10 +7,13 @@
     "dev": "nodemon --exec babel-node src/main.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.9",
     "@discordjs/rest": "^0.3.0",
     "discord-api-types": "^0.27.2",
     "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "graphql": "^16.3.0",
+    "graphql-request": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
