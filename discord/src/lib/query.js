@@ -13,3 +13,23 @@ export const userQuery = gql`
     }
   }
 `;
+
+export const vsQuery = gql`
+  query ($id: String!) {
+    user(login: $id) {
+      login
+      name
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              contributionCount
+              date
+            }
+          }
+        }
+      }
+    }
+  }
+`;

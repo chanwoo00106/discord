@@ -3,7 +3,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import dotenv from "dotenv";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { user } from "./lib/command";
+import { user, vs } from "./lib/command";
 
 dotenv.config();
 
@@ -15,6 +15,11 @@ const commands = [
   new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Replies with pong!"),
+  new SlashCommandBuilder()
+    .setName("vs")
+    .setDescription("graph")
+    .addStringOption((str) => str.setName("id1").setDescription("github id"))
+    .addStringOption((str) => str.setName("id2").setDescription("github id")),
 ].map((command) => command.toJSON());
 
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
@@ -52,8 +57,11 @@ client.on("interactionCreate", async (interaction) => {
   if (commandName === "ping") {
     await interaction.reply("Pong!");
   } else if (commandName === "user") {
-    const embeds = await user(options.getString("id"));
-    interaction.reply({ embeds: [embeds] });
+    const embed = await user(options.getString("id"));
+    interaction.reply({ embeds: [embed] });
+  } else if (commandName === "vs") {
+    const result = await vs(options.getString("id1"), options.getString("id2"));
+    interaction.reply(result);
   }
 });
 
