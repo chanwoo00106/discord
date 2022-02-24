@@ -1,16 +1,15 @@
 import { GraphQLClient } from "graphql-request";
 import { MessageEmbed } from "discord.js";
 import { userQuery } from "./query";
+import { GITHUB_API } from "../../secret";
 
 const client = new GraphQLClient("https://api.github.com/graphql");
 
-client.setHeader("authorization", `Bearer ${process.env.GITHUB_API}`);
+client.setHeader("Authorization", `Bearer ${GITHUB_API}`);
 
 export async function user(id) {
   try {
-    const {
-      data: { user },
-    } = await client.request(userQuery, { id });
+    const { user } = await client.request(userQuery, { id });
 
     const embeds = new MessageEmbed()
       .setColor("#f6e58d")
