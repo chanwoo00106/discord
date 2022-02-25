@@ -1,6 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 import { MessageEmbed } from "discord.js";
-import { userQuery, vsQuery } from "./query";
+import { repoQuery, userQuery, vsQuery } from "./query";
 import { GITHUB_API } from "../../secret";
 import { makeUrl } from "./makeUrl";
 
@@ -30,7 +30,45 @@ export async function user(id) {
         {
           name: "총 커밋",
           value: `${user.contributionsCollection.contributionCalendar.totalContributions}`,
+          inline: true,
+        },
+        {
+          name: "총 레포 개수",
+          value: `${user.repositories.totalCount}`,
+          inline: true,
         }
+      )
+      .setTimestamp()
+      .setFooter({
+        text: user.name || user.login,
+        iconURL: user.avatarUrl,
+      });
+
+    return embeds;
+  } catch (e) {
+    const embeds = new MessageEmbed()
+      .setColor("#EA2027")
+      .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
+
+    return embeds;
+  }
+}
+
+export async function repo(id) {
+  try {
+    const { user } = await client.request(repoQuery, { id });
+
+    const embeds = new MessageEmbed()
+      .setColor("#b8e994")
+      .setTitle(user.name || user.login)
+      .setURL(`${user.url}?tab=repositories`)
+      .setDescription(`총 레포 수: ${user.repositories.totalCount}`)
+      .setThumbnail(user.avatarUrl)
+      .addFields(
+        user.repositories.nodes.map((i, index) => ({
+          name: i.name,
+          value: i.description || "설명이 없어요!",
+        }))
       )
       .setTimestamp()
       .setFooter({

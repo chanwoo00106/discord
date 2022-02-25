@@ -10,6 +10,9 @@ export const userQuery = gql`
       avatarUrl
       location
       url
+      repositories {
+        totalCount
+      }
       contributionsCollection {
         contributionCalendar {
           totalContributions
@@ -33,6 +36,24 @@ export const vsQuery = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const repoQuery = gql`
+  query ($id: String!) {
+    user(login: $id) {
+      login
+      name
+      avatarUrl
+      url
+      repositories(first: 4, orderBy: { field: PUSHED_AT, direction: DESC }) {
+        nodes {
+          name
+          description
+        }
+        totalCount
       }
     }
   }

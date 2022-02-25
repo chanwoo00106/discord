@@ -3,7 +3,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import dotenv from "dotenv";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { user, vs } from "./lib/command";
+import { repo, user, vs } from "./lib/command";
 
 dotenv.config();
 
@@ -11,6 +11,10 @@ const commands = [
   new SlashCommandBuilder()
     .setName("user")
     .setDescription("You can search for users on github.")
+    .addStringOption((str) => str.setName("id").setDescription("github id")),
+  new SlashCommandBuilder()
+    .setName("repo")
+    .setDescription("You can search for user repo on github.")
     .addStringOption((str) => str.setName("id").setDescription("github id")),
   new SlashCommandBuilder()
     .setName("ping")
@@ -65,6 +69,8 @@ client.on("interactionCreate", async (interaction) => {
       interaction.reply({ embeds: [result] });
     }
     interaction.reply(result);
+  } else if (commandName === "repo") {
+    interaction.reply({ embeds: [await repo(options.getString("id"))] });
   }
 });
 
