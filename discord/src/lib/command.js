@@ -44,23 +44,36 @@ export async function user(id) {
 
 export async function vs(id1, id2) {
   try {
+    const one = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const two = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let MonthTemp = new Date().getMonth();
+    let position = 0;
+
     const data1 = (await client.request(vsQuery, { id: id1 })).user;
     const data2 = (await client.request(vsQuery, { id: id2 })).user;
 
-    const one = data1.contributionsCollection.contributionCalendar.weeks.map(
-      (i) => {
-        let sum = 0;
-        i.contributionDays.forEach((j) => (sum += j.contributionCount));
-        return sum;
-      }
-    );
-    const two = data2.contributionsCollection.contributionCalendar.weeks.map(
-      (i) => {
-        let sum = 0;
-        i.contributionDays.forEach((j) => (sum += j.contributionCount));
-        return sum;
-      }
-    );
+    data1.contributionsCollection.contributionCalendar.weeks.map((i) => {
+      i.contributionDays.forEach((j) => {
+        if (MonthTemp !== new Date(j.date).getMonth()) {
+          MonthTemp = new Date(j.date).getMonth();
+          position += 1;
+        }
+        one[position] += j.contributionCount;
+      });
+    });
+
+    MonthTemp = new Date().getMonth();
+    position = 0;
+
+    data2.contributionsCollection.contributionCalendar.weeks.map((i) => {
+      i.contributionDays.forEach((j) => {
+        if (MonthTemp !== new Date(j.date).getMonth()) {
+          MonthTemp = new Date(j.date).getMonth();
+          position += 1;
+        }
+        two[position] += j.contributionCount;
+      });
+    });
 
     return makeUrl(
       one,
