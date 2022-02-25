@@ -21,9 +21,16 @@ export async function user(id) {
       .addFields(
         {
           name: "company",
-          value: user.company || "아직 회사가 없어요",
+          value: user.company || "아직 회사가 없어요!",
         },
-        { name: "location", value: user.location || "아직 사는 곳이 없어요" }
+        {
+          name: "location",
+          value: user.location || "아직 사는 곳이 없어요!",
+        },
+        {
+          name: "총 커밋",
+          value: `${user.contributionsCollection.contributionCalendar.totalContributions}`,
+        }
       )
       .setTimestamp()
       .setFooter({
@@ -33,10 +40,9 @@ export async function user(id) {
 
     return embeds;
   } catch (e) {
-    console.log(e);
     const embeds = new MessageEmbed()
       .setColor("#EA2027")
-      .setTitle("존재하지 않는 id입니다");
+      .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
 
     return embeds;
   }

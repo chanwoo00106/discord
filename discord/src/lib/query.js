@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 
 export const userQuery = gql`
-  query ($id: String!) {
+  query userInfo($id: String!) {
     user(login: $id) {
       name
       login
@@ -10,6 +10,11 @@ export const userQuery = gql`
       avatarUrl
       location
       url
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+        }
+      }
     }
   }
 `;
@@ -21,7 +26,6 @@ export const vsQuery = gql`
       name
       contributionsCollection {
         contributionCalendar {
-          totalContributions
           weeks {
             contributionDays {
               contributionCount

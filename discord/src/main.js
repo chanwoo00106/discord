@@ -61,6 +61,9 @@ client.on("interactionCreate", async (interaction) => {
     interaction.reply({ embeds: [embed] });
   } else if (commandName === "vs") {
     const result = await vs(options.getString("id1"), options.getString("id2"));
+    if (typeof result !== "string") {
+      interaction.reply({ embeds: [result] });
+    }
     interaction.reply(result);
   }
 });
