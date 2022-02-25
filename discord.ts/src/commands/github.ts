@@ -65,7 +65,7 @@ export abstract class GithubDiscord {
 
   @Slash("vs")
   @SlashGroup("github")
-  async repo(
+  async vs(
     @SlashOption("id1", { description: "github id" }) id1: string,
     @SlashOption("id2", { description: "github id" }) id2: string,
     interaction: CommandInteraction
@@ -103,6 +103,44 @@ export abstract class GithubDiscord {
       const embeds = new MessageEmbed()
         .setColor("#EA2027")
         .setTitle(`존재하지 않는 id입니다`);
+      interaction.reply({ embeds: [embeds] });
+    }
+  }
+
+  @Slash("repo")
+  @SlashGroup("github")
+  async repos(
+    @SlashOption("id", { description: "github id" }) id: string,
+    interaction: CommandInteraction
+  ) {
+    try {
+      const { user } = await client.request(repos(id));
+
+      const embeds = new MessageEmbed()
+        .setColor("#b8e994")
+        .setTitle(user.name || user.login)
+        .setURL(`${user.url}?tab=repositories`)
+        .setDescription(`총 레포 수: ${user.repositories.totalCount}`)
+        .setThumbnail(user.avatarUrl)
+        .addFields(
+          user.repositories.nodes.map((i: any) => ({
+            name: i.name,
+            value: i.description || "설명이 없어요!",
+          }))
+        )
+        .setTimestamp()
+        .setFooter({
+          text: user.name || user.login,
+          iconURL: user.avatarUrl,
+        });
+
+      interaction.reply({ embeds: [embeds] });
+    } catch (e) {
+      console.log(e);
+      const embeds = new MessageEmbed()
+        .setColor("#EA2027")
+        .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
+
       interaction.reply({ embeds: [embeds] });
     }
   }
@@ -165,6 +203,24 @@ function Contribution(id: string) {
     }
   }
 }`;
+}
+
+function repos(id: string) {
+  return `query {
+    user(login: "${id}") {
+      login
+      name
+      avatarUrl
+      url
+      repositories(first: 4, orderBy: { field: PUSHED_AT, direction: DESC }) {
+        nodes {
+          name
+          description
+        }
+        totalCount
+      }
+    }
+  }`;
 }
 
 function makeUrl(
