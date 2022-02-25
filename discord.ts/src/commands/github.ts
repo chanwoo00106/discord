@@ -136,7 +136,6 @@ export abstract class GithubDiscord {
 
       interaction.reply({ embeds: [embeds] });
     } catch (e) {
-      console.log(e);
       const embeds = new MessageEmbed()
         .setColor("#EA2027")
         .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
