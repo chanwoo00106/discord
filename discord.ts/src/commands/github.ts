@@ -86,8 +86,8 @@ export abstract class GithubDiscord {
         )
       ).user;
 
-      const data1 = makeArray(user1);
-      const data2 = makeArray(user2);
+      const data1 = makeArray(user1, "year");
+      const data2 = makeArray(user2, "year");
 
       interaction.reply(
         makeUrl(
@@ -143,24 +143,83 @@ export abstract class GithubDiscord {
       interaction.reply({ embeds: [embeds] });
     }
   }
+
+  @Slash("vs_month")
+  @SlashGroup("github")
+  async vsMonth(
+    @SlashOption("id1", { description: "github id" }) id1: string,
+    @SlashOption("id2", { description: "github id" }) id2: string,
+    interaction: CommandInteraction
+  ) {
+    const date = new Date();
+    const to = new Date().toISOString();
+    const from = new Date(date.setMonth(date.getMonth() - 1)).toISOString();
+
+    try {
+      const user1: Repos = (
+        await client.request(vsMonth, { id: id1, from, to })
+      ).user;
+      const user2: Repos = (
+        await client.request(vsMonth, { id: id2, from, to })
+      ).user;
+
+      const { data1, monthArray } = makeCountAndMonthArray(user1);
+      const data2 = makeArray(user2, "month");
+
+      const url = `https://quickchart.io/chart?c={type:'line',data:{labels:[${monthArray.map(
+        (date) => new Date(date).getDate()
+      )}],datasets:[{label:'${
+        user1.name || user1.login
+      }',data:[${data1}],fill:false,borderColor:'blue'},{label:'${
+        user2.name || user2.login
+      }',data:[${data2}],fill:false,borderColor:'green'}]}}`;
+
+      interaction.reply(url);
+    } catch (e) {}
+  }
 }
 
-function makeArray(user: Repos): number[] {
-  const one = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  let MonthTemp = new Date().getMonth();
-  let position = 0;
+function makeArray(user: Repos, type: "year" | "month"): number[] {
+  if (type === "year") {
+    const one = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let MonthTemp = new Date().getMonth();
+    let position = 0;
 
+    user.contributionsCollection.contributionCalendar.weeks.map((i) => {
+      i.contributionDays.forEach((j) => {
+        if (MonthTemp !== new Date(j.date).getMonth()) {
+          MonthTemp = new Date(j.date).getMonth();
+          position += 1;
+        }
+        one[position] += j.contributionCount;
+      });
+    });
+
+    return one;
+  } else {
+    const countArray: number[] = [];
+    user.contributionsCollection.contributionCalendar.weeks.map((i) => {
+      i.contributionDays.forEach((j) => {
+        countArray.push(j.contributionCount);
+      });
+    });
+    return countArray;
+  }
+}
+
+function makeCountAndMonthArray(user: Repos): {
+  data1: number[];
+  monthArray: string[];
+} {
+  const data1: number[] = [];
+  const monthArray: string[] = [];
   user.contributionsCollection.contributionCalendar.weeks.map((i) => {
     i.contributionDays.forEach((j) => {
-      if (MonthTemp !== new Date(j.date).getMonth()) {
-        MonthTemp = new Date(j.date).getMonth();
-        position += 1;
-      }
-      one[position] += j.contributionCount;
+      data1.push(j.contributionCount);
+      monthArray.push(j.date);
     });
   });
-
-  return one;
+  return { data1, monthArray };
 }
 
 function UserInfo(id: string): string {
@@ -221,6 +280,25 @@ function repos(id: string) {
     }
   }`;
 }
+
+const vsMonth = gql`
+  query ($id: String!, $from: DateTime!, $to: DateTime!) {
+    user(login: $id) {
+      name
+      login
+      contributionsCollection(from: $from, to: $to) {
+        contributionCalendar {
+          weeks {
+            contributionDays {
+              contributionCount
+              date
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 function makeUrl(
   one: number[],
