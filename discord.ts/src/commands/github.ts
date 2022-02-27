@@ -166,13 +166,14 @@ export abstract class GithubDiscord {
       const { data1, monthArray } = makeCountAndMonthArray(user1);
       const data2 = makeArray(user2, "month");
 
-      const url = `https://quickchart.io/chart?c={type:'line',data:{labels:[${monthArray.map(
-        (date) => new Date(date).getDate()
-      )}],datasets:[{label:'${
-        user1.name.replace(" ", "") || user1.login
-      }',data:[${data1}],fill:false,borderColor:'blue'},{label:'${
-        user2.name.replace(" ", "") || user2.login
-      }',data:[${data2}],fill:false,borderColor:'green'}]}}`;
+      const url =
+        `https://quickchart.io/chart?c={type:'line',data:{labels:[${monthArray.map(
+          (date) => new Date(date).getDate()
+        )}],datasets:[{label:'${
+          user1.name || user1.login
+        }',data:[${data1}],fill:false,borderColor:'blue'},{label:'${
+          user2.name || user2.login
+        }',data:[${data2}],fill:false,borderColor:'green'}]}}`.trim();
 
       interaction.reply(url);
     } catch (e) {}
@@ -313,13 +314,7 @@ function makeUrl(
 
   return `https://quickchart.io/chart?c={type:'line',data:{labels:[${result.map(
     (i: any) => `\'${i}\'`
-  )}],datasets:[{label:'${name1.replace(
-    " ",
-    ""
-  )}',data:[${one}],fill:false,borderColor:'blue'},{label:'${name2.replace(
-    " ",
-    ""
-  )}',data:[${two}],fill:false,borderColor:'green'}]}}`;
+  )}],datasets:[{label:'${name1}',data:[${one}],fill:false,borderColor:'blue'},{label:'${name2}',data:[${two}],fill:false,borderColor:'green'}]}}`.trim();
 }
 
 function makeMonthArray(month: number) {

@@ -8,7 +8,7 @@ export abstract class AppDiscord {
     console.log("Message Deleted", client.user?.username, message.content);
   }
   @On("message")
-  sayMessage([message]: ArgsOf<"messageDelete">, client: Client) {
+  async sayMessage([message]: ArgsOf<"messageDelete">, client: Client) {
     if (message.content === "형우") message.reply("씹덕");
   }
 }
