@@ -3,28 +3,9 @@ import { Intents, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
 import { dirname, importx } from "@discordx/importer";
 import { Koa } from "@discordx/koa";
-import mongoose from "mongoose";
-import { IUser } from "./types/IUser";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const UserSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  userInfo: {
-    required: true,
-    type: Object,
-  },
-});
-
-export const mongo = mongoose.model<IUser & mongoose.Document>(
-  "User",
-  UserSchema
-);
 
 export const client = new Client({
   simpleCommand: {
