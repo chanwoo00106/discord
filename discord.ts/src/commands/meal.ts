@@ -4,7 +4,7 @@ import { MealType } from "../types/mealType";
 import axios from "axios";
 
 @Discord()
-class choicesExample {
+class MealDiscord {
   @Slash("meal")
   async meal(interaction: CommandInteraction) {
     const date = new Date();
@@ -20,9 +20,7 @@ class choicesExample {
       const { data }: { data: MealType } = await axios.get(queryUrl);
       const re: RegExp = /<br\/>/gi;
       const embeds = new MessageEmbed()
-        .setTitle(
-          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} 급식`
-        )
+        .setTitle(`${date.getFullYear()}/${month}/${day} 급식`)
         .addFields(
           {
             name: "아침",
