@@ -20,7 +20,7 @@ class MealDiscord {
       const { data }: { data: MealType } = await axios.get(queryUrl);
       const re: RegExp = /<br\/>/gi;
       const embeds = new MessageEmbed()
-        .setTitle(`${date.getFullYear()}/${month}/${day} 급식`)
+        .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 급식`)
         .addFields(
           {
             name: "아침",
@@ -28,6 +28,7 @@ class MealDiscord {
               re,
               "\n"
             ),
+            inline: true,
           },
           {
             name: "점심",
@@ -35,6 +36,7 @@ class MealDiscord {
               re,
               "\n"
             ),
+            inline: true,
           },
           {
             name: "저녁",
@@ -42,9 +44,16 @@ class MealDiscord {
               re,
               "\n"
             ),
+            inline: true,
           }
         )
+        .setFooter({
+          text: interaction.member?.user.username || "인식하지 못했어요.",
+          iconURL: `https://cdn.discordapp.com/avatars/${interaction.member?.user.id}/${interaction.member?.user.avatar}.png`,
+        })
+        .setTimestamp()
         .setColor("#fd9644");
+      console.log(interaction.member?.user.username);
 
       interaction.reply({ embeds: [embeds] });
     } catch (e) {
