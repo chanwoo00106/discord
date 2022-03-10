@@ -10,11 +10,11 @@ class MealDiscord {
     try {
       const date = new Date();
       const month =
-        Math.floor(date.getMonth() + 1) / 10
+        Math.floor(date.getMonth() + 1) < 10
           ? "0" + (date.getMonth() + 1)
           : date.getMonth() + 1;
       const day =
-        Math.floor(date.getDate()) / 10 ? "0" + date.getDate() : date.getDate();
+        Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate();
       const queryUrl =
         process.env.SCHEDULE_API + `${date.getFullYear()}${month}${day}`;
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
