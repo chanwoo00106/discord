@@ -19,10 +19,13 @@ class MealDiscord {
         process.env.SCHEDULE_API + `${date.getFullYear()}${month}${day}`;
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
 
+      console.log(data);
+
       if (!data.hisTimetable) {
         interaction.reply({
           embeds: [new MessageEmbed().setTitle("수업이 없는 날입니다.")],
         });
+        return;
       }
 
       const Class = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
@@ -39,7 +42,7 @@ class MealDiscord {
     } catch (e) {
       console.log(e);
       const embeds = new MessageEmbed().setTitle("오류가 생겼습니다.");
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
 }

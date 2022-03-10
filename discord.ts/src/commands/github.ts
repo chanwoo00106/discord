@@ -54,12 +54,13 @@ export abstract class GithubDiscord {
           text: user.name || user.login,
           iconURL: user.avatarUrl,
         });
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     } catch (e) {
+      console.log(e);
       const embeds = new MessageEmbed()
         .setColor("#EA2027")
         .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
 
@@ -100,10 +101,11 @@ export abstract class GithubDiscord {
         )
       );
     } catch (e) {
+      console.log(e);
       const embeds = new MessageEmbed()
         .setColor("#EA2027")
         .setTitle(`존재하지 않는 id입니다`);
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
 
@@ -134,13 +136,14 @@ export abstract class GithubDiscord {
           iconURL: user.avatarUrl,
         });
 
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     } catch (e) {
+      console.log(e);
       const embeds = new MessageEmbed()
         .setColor("#EA2027")
         .setTitle(`${id}은(는) 존재하지 않는 id입니다`);
 
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
 
@@ -175,8 +178,15 @@ export abstract class GithubDiscord {
           user2.name || user2.login
         }',data:[${data2}],fill:false,borderColor:'green'}]}}`.trim();
 
-      interaction.reply(url);
-    } catch (e) {}
+      await interaction.reply(url);
+    } catch (e) {
+      console.log(e);
+      const embeds = new MessageEmbed()
+        .setColor("#EA2027")
+        .setTitle(`존재하지 않는 id입니다`);
+
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
+    }
   }
 }
 

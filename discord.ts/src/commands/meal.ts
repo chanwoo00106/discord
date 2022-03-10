@@ -2,18 +2,20 @@ import { CommandInteraction, Message, MessageEmbed } from "discord.js";
 import { Discord, Slash } from "discordx";
 import { MealType } from "../types/mealType";
 import axios from "axios";
+
 const meal = ["아침", "점심", "저녁"];
+
 @Discord()
 class MealDiscord {
   @Slash("meal")
   async meal(interaction: CommandInteraction) {
     const date = new Date();
     const month =
-      Math.floor(date.getMonth() + 1) / 10
+      Math.floor(date.getMonth() + 1) < 10
         ? "0" + (date.getMonth() + 1)
         : date.getMonth() + 1;
     const day =
-      Math.floor(date.getDate()) / 10 ? "0" + date.getDate() : date.getDate();
+      Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate();
     const queryUrl =
       process.env.MEAL_API + `${date.getFullYear()}${month}${day}`;
     try {
@@ -42,11 +44,11 @@ class MealDiscord {
         .setColor("#fd9644");
       console.log(interaction.member?.user.username);
 
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     } catch (e) {
       console.log(e);
       const embeds = new MessageEmbed().setTitle("오류가 생겼습니다.");
-      interaction.reply({ embeds: [embeds] });
+      await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
 }
