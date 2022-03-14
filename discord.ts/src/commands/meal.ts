@@ -1,5 +1,5 @@
-import { CommandInteraction, Message, MessageEmbed } from "discord.js";
-import { Discord, Slash, SlashChoice } from "discordx";
+import { CommandInteraction, MessageEmbed } from "discord.js";
+import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 import { MealType } from "../types/mealType";
 import axios from "axios";
 
@@ -16,13 +16,15 @@ class MealDiscord {
     @SlashChoice("어제")
     @SlashChoice("오늘")
     @SlashChoice("내일")
+    @SlashOption("date", { description: "날짜 선택" })
     atDate: AtDate,
     interaction: CommandInteraction
   ) {
-    const [date, month, day] = dateCalc(atDate);
-    const queryUrl =
-      process.env.MEAL_API + `${date.getFullYear()}${month}${day}`;
     try {
+      const [date, month, day] = dateCalc(atDate);
+      const queryUrl =
+        process.env.MEAL_API + `${date.getFullYear()}${month}${day}`;
+
       const { data }: { data: MealType } = await axios.get(queryUrl);
 
       if (!data.mealServiceDietInfo) {
