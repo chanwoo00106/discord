@@ -1,21 +1,25 @@
 import { CommandInteraction, Message, MessageEmbed } from "discord.js";
-import { Discord, Slash } from "discordx";
+import { Discord, Slash, SlashChoice } from "discordx";
 import { MealType } from "../types/mealType";
 import axios from "axios";
 
 const meal = ["아침", "점심", "저녁"];
 
+type AtDate = "어제" | "오늘" | "내일";
+
+type DateCalc = [Date, string, string];
+
 @Discord()
 class MealDiscord {
   @Slash("meal")
-  async meal(interaction: CommandInteraction) {
-    const date = new Date();
-    const month =
-      Math.floor(date.getMonth() + 1) < 10
-        ? "0" + (date.getMonth() + 1)
-        : date.getMonth() + 1;
-    const day =
-      Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate();
+  async meal(
+    @SlashChoice("어제")
+    @SlashChoice("오늘")
+    @SlashChoice("내일")
+    atDate: AtDate,
+    interaction: CommandInteraction
+  ) {
+    const [date, month, day] = dateCalc(atDate);
     const queryUrl =
       process.env.MEAL_API + `${date.getFullYear()}${month}${day}`;
     try {
@@ -51,4 +55,26 @@ class MealDiscord {
       await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
+}
+
+function dateCalc(atDate: AtDate): DateCalc {
+  let date = new Date();
+  switch (atDate) {
+    case "어제":
+      date = new Date(date.setDate(date.getDate() - 1));
+    case "오늘":
+      break;
+    case "내일":
+      date = new Date(date.setDate(date.getDate() + 1));
+  }
+  const month = `${
+    Math.floor(date.getMonth() + 1) < 10
+      ? "0" + (date.getMonth() + 1)
+      : date.getMonth() + 1
+  }`;
+  const day = `${
+    Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate()
+  }`;
+
+  return [date, month, day];
 }
