@@ -1,9 +1,9 @@
-import { CommandInteraction, Message, MessageEmbed } from "discord.js";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 import { scheduleType } from "../types/scheduleType";
 import axios from "axios";
 
-type AtDate = "어제" | "오늘" | "내일";
+type Week = "Mon" | "Tue" | "Wen" | "Thu" | "Fri" | "토" | "일";
 
 type DateCalc = [Date, string, string];
 
@@ -11,11 +11,13 @@ type DateCalc = [Date, string, string];
 class MealDiscord {
   @Slash("schedule")
   async schedule(
-    @SlashChoice("어제")
-    @SlashChoice("오늘")
-    @SlashChoice("내일")
-    @SlashOption("date", { description: "날짜 선택" })
-    atDate: AtDate,
+    @SlashChoice("Mon")
+    @SlashChoice("Tue")
+    @SlashChoice("Wen")
+    @SlashChoice("Thu")
+    @SlashChoice("Fri")
+    @SlashOption("week", { description: "요일 선택" })
+    atDate: Week,
     interaction: CommandInteraction
   ) {
     try {
@@ -54,16 +56,9 @@ class MealDiscord {
   }
 }
 
-function dateCalc(atDate: AtDate): DateCalc {
-  let date = new Date();
-  switch (atDate) {
-    case "어제":
-      date = new Date(date.setDate(date.getDate() - 1));
-    case "오늘":
-      break;
-    case "내일":
-      date = new Date(date.setDate(date.getDate() + 1));
-  }
+function dateCalc(atDate: Week): DateCalc {
+  const date = getDate(atDate);
+
   const month = `${
     Math.floor(date.getMonth() + 1) < 10
       ? "0" + (date.getMonth() + 1)
@@ -74,4 +69,13 @@ function dateCalc(atDate: AtDate): DateCalc {
   }`;
 
   return [date, month, day];
+}
+
+const week = ["일", "Mon", "Tue", "Wen", "Thu", "Fri", "토"];
+
+function getDate(weekday: Week): Date {
+  const date = new Date();
+  const index = week.findIndex((i) => i === weekday);
+  const day = date.getDay();
+  return new Date(new Date().setDate(new Date().getDate() + (index - day)));
 }
