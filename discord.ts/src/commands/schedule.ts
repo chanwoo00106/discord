@@ -19,8 +19,6 @@ class MealDiscord {
         process.env.SCHEDULE_API + `${date.getFullYear()}${month}${day}`;
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
 
-      console.log(data);
-
       if (!data.hisTimetable) {
         interaction.reply({
           embeds: [new MessageEmbed().setTitle("수업이 없는 날입니다.")],
@@ -28,15 +26,19 @@ class MealDiscord {
         return;
       }
 
-      const Class = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
-
-      let result = "";
-
-      Class?.map((i) => (result += `${i}\n`));
+      const result = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
 
       const embeds = new MessageEmbed()
         .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 시간표`)
-        .setDescription(result);
+        .setFields(
+          ...result?.map((i, index) => ({ name: `${index + 1}교시`, value: i }))
+        )
+        .setColor("#1dd1a1")
+        .setFooter({
+          text: interaction.member?.user.username || "인식하지 못했어요.",
+          iconURL: `https://cdn.discordapp.com/avatars/${interaction.member?.user.id}/${interaction.member?.user.avatar}.png`,
+        })
+        .setTimestamp();
 
       interaction.reply({ embeds: [embeds] });
     } catch (e) {
