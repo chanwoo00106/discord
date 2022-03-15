@@ -1,20 +1,25 @@
 import { CommandInteraction, Message, MessageEmbed } from "discord.js";
-import { Discord, Slash } from "discordx";
+import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 import { scheduleType } from "../types/scheduleType";
 import axios from "axios";
+
+type AtDate = "어제" | "오늘" | "내일";
+
+type DateCalc = [Date, string, string];
 
 @Discord()
 class MealDiscord {
   @Slash("schedule")
-  async schedule(interaction: CommandInteraction) {
+  async schedule(
+    @SlashChoice("어제")
+    @SlashChoice("오늘")
+    @SlashChoice("내일")
+    @SlashOption("date", { description: "날짜 선택" })
+    atDate: AtDate,
+    interaction: CommandInteraction
+  ) {
     try {
-      const date = new Date();
-      const month =
-        Math.floor(date.getMonth() + 1) < 10
-          ? "0" + (date.getMonth() + 1)
-          : date.getMonth() + 1;
-      const day =
-        Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate();
+      const [date, month, day] = dateCalc(atDate);
       const queryUrl =
         process.env.SCHEDULE_API + `${date.getFullYear()}${month}${day}`;
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
@@ -47,4 +52,26 @@ class MealDiscord {
       await interaction.reply({ embeds: [embeds], fetchReply: true });
     }
   }
+}
+
+function dateCalc(atDate: AtDate): DateCalc {
+  let date = new Date();
+  switch (atDate) {
+    case "어제":
+      date = new Date(date.setDate(date.getDate() - 1));
+    case "오늘":
+      break;
+    case "내일":
+      date = new Date(date.setDate(date.getDate() + 1));
+  }
+  const month = `${
+    Math.floor(date.getMonth() + 1) < 10
+      ? "0" + (date.getMonth() + 1)
+      : date.getMonth() + 1
+  }`;
+  const day = `${
+    Math.floor(date.getDate()) < 10 ? "0" + date.getDate() : date.getDate()
+  }`;
+
+  return [date, month, day];
 }

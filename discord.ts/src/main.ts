@@ -61,7 +61,7 @@ async function run() {
   if (!process.env.BOT_TOKEN) {
     throw Error("Could not find BOT_TOKEN in your environment");
   }
-  await client.login(process.env.TEST_TOKEN || ""); // provide your bot token
+  await client.login(process.env.BOT_TOKEN || ""); // provide your bot token
 
   // ************* rest api section: start **********
 
