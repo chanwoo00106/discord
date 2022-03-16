@@ -3,7 +3,7 @@ import { Discord, Slash, SlashChoice, SlashOption } from "discordx";
 import { scheduleType } from "../types/scheduleType";
 import axios from "axios";
 
-type Week = "Mon" | "Tue" | "Wen" | "Thu" | "Fri" | "토" | "일";
+type Week = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "토" | "일";
 
 type DateCalc = [Date, string, string];
 
@@ -13,7 +13,7 @@ class MealDiscord {
   async schedule(
     @SlashChoice("Mon")
     @SlashChoice("Tue")
-    @SlashChoice("Wen")
+    @SlashChoice("Wed")
     @SlashChoice("Thu")
     @SlashChoice("Fri")
     @SlashOption("week", { description: "요일 선택" })
@@ -27,8 +27,9 @@ class MealDiscord {
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
 
       if (!data.hisTimetable) {
-        interaction.reply({
+        await interaction.reply({
           embeds: [new MessageEmbed().setTitle("수업이 없는 날입니다.")],
+          fetchReply: true,
         });
         return;
       }
@@ -47,7 +48,7 @@ class MealDiscord {
         })
         .setTimestamp();
 
-      interaction.reply({ embeds: [embeds] });
+      interaction.reply({ embeds: [embeds], fetchReply: true });
     } catch (e) {
       console.log(e);
       const embeds = new MessageEmbed().setTitle("오류가 생겼습니다.");
@@ -71,7 +72,7 @@ function dateCalc(atDate: Week): DateCalc {
   return [date, month, day];
 }
 
-const week = ["일", "Mon", "Tue", "Wen", "Thu", "Fri", "토"];
+const week = ["일", "Mon", "Tue", "Wed", "Thu", "Fri", "토"];
 
 function getDate(weekday: Week): Date {
   const date = new Date();
