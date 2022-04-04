@@ -29,7 +29,8 @@ class MealDiscord {
 
       if (!data.mealServiceDietInfo) {
         const embeds = new MessageEmbed().setTitle("급식이 없는 날입니다");
-        interaction.reply({ embeds: [embeds], fetchReply: true });
+        await interaction.reply({ embeds: [embeds], fetchReply: true });
+        return;
       }
 
       const re: RegExp = /<br\/>/gi;
