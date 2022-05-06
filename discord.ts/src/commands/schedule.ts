@@ -8,7 +8,7 @@ type Week = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "토" | "일";
 type DateCalc = [Date, string, string];
 
 @Discord()
-class MealDiscord {
+class ScheduleDiscord {
   @Slash("schedule")
   async schedule(
     @SlashChoice("Mon")
@@ -26,13 +26,18 @@ class MealDiscord {
         process.env.SCHEDULE_API + `${date.getFullYear()}${month}${day}`;
       const { data }: { data: scheduleType } = await axios.get(queryUrl);
 
-      if (!data.hisTimetable) {
+      if (!data || !data.hisTimetable) {
         await interaction.reply({
           embeds: [new MessageEmbed().setTitle("수업이 없는 날입니다.")],
           fetchReply: true,
         });
         return;
-      }
+      } else if (
+        !data.hisTimetable[0] ||
+        !data.hisTimetable[0].row ||
+        !data.hisTimetable[0].row[0]
+      )
+        throw new Error();
 
       const result = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
 

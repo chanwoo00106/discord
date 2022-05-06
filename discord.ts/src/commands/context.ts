@@ -1,4 +1,4 @@
-import { ContextMenuInteraction, GuildMember, User } from "discord.js";
+import { ContextMenuInteraction } from "discord.js";
 import { Discord, ContextMenu, SlashOption } from "discordx";
 
 @Discord()
