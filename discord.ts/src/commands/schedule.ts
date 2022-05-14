@@ -8,7 +8,7 @@ type Week = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "토" | "일";
 type DateCalc = [Date, string, string];
 
 @Discord()
-class ScheduleDiscord {
+export abstract class ScheduleDiscord {
   @Slash("schedule")
   async schedule(
     @SlashChoice("Mon")
@@ -32,12 +32,7 @@ class ScheduleDiscord {
           fetchReply: true,
         });
         return;
-      } else if (
-        !data.hisTimetable[0] ||
-        !data.hisTimetable[0].row ||
-        !data.hisTimetable[0].row[0]
-      )
-        throw new Error();
+      }
 
       const result = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
 
