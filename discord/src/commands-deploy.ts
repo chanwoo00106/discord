@@ -2,16 +2,10 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import config from "src/config";
 import * as Commands from "src/commands";
-import { SlashCommandBuilder } from "@discordjs/builders";
-
-interface CommandType {
-  data: SlashCommandBuilder;
-}
 
 const commands = [];
 
-for (const command of Object.values<CommandType>(Commands))
-  commands.push(command.data);
+for (const command of Object.values(Commands)) commands.push(command.data);
 
 const rest = new REST({ version: "9" }).setToken(config.BOT_TOKEN);
 
