@@ -1,14 +1,18 @@
-import { config } from "dotenv";
-import process from "process";
-import { ENV } from "src/config/env";
-config({
-  path:
-    __dirname +
-    `\\${process.env.NODE_ENV === "production" ? "..\\" : ""}..\\.env.${
-      process.env.NODE_ENV
-    }`,
+import config from "src/config";
+import { Client } from "discord.js";
+
+export const client = new Client({
+  intents: ["GUILDS", "GUILD_MEMBERS", "DIRECT_MESSAGES"],
 });
 
-console.log(process.env.NODE_ENV);
+client.once("ready", () => {
+  console.log("🤖 Discord bot ready!");
+});
 
-console.log(process.env[ENV.BOT_TOKEN]);
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
+  const { commandName } = interaction;
+  if (commandName === "ping") return interaction.reply("pong");
+});
+
+client.login(config.BOT_TOKEN);
