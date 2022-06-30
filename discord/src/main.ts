@@ -1,5 +1,8 @@
 import config from "src/config";
 import { Client } from "discord.js";
+import * as Commands from "src/commands"
+
+const commands = Object(Commands)
 
 export const client = new Client({
   intents: ["GUILDS", "GUILD_MEMBERS", "DIRECT_MESSAGES"],
@@ -12,7 +15,9 @@ client.once("ready", () => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
   const { commandName } = interaction;
-  if (commandName === "ping") return interaction.reply("pong");
+  commands[commandName].execute(interaction, client)
 });
+
+import "src/commands-deploy";
 
 client.login(config.BOT_TOKEN);
