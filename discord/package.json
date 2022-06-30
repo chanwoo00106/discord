@@ -1,24 +1,23 @@
 {
   "name": "discord",
   "version": "1.0.0",
-  "main": "src/main.js",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/main.js"
-  },
-  "dependencies": {
-    "@apollo/client": "^3.5.9",
-    "@discordjs/rest": "^0.3.0",
-    "discord-api-types": "^0.27.2",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
-    "graphql": "^16.3.0",
-    "graphql-request": "^4.0.0"
+    "build": "tsc",
+    "start": "node build/src/main",
+    "dev": "nodemon --watch src --exec ts-node src/main"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.5",
-    "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
-    "nodemon": "^2.0.15"
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.18",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1"
   }
 }
