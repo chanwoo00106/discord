@@ -1,0 +1,6 @@
+export enum ENV {
+  BOT_TOKEN = "BOT_TOKEN",
+  GITHUB_API = "GITHUB_API",
+  MEAL_API = "MEAL_API",
+  SCHEDULE_API = "SCHEDULE_API",
+}
