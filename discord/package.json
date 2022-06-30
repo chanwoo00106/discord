@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "cross-env NODE_ENV=production node -r ts-node/register/transpile-only -r tsconfig-paths/register build/src/main",
-    "dev": "cross-env NODE_ENV=local nodemon --watch src --exec ts-node -r tsconfig-paths/register src/main"
+    "dev": "cross-env NODE_ENV=local nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node -r tsconfig-paths/register src/main\""
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
