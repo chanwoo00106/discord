@@ -5,4 +5,5 @@ export enum ENV {
   SCHEDULE_API = "SCHEDULE_API",
   GUILD_ID = "GUILD_ID",
   CLIENT_ID = "CLIENT_ID",
+  NODE_ENV = "NODE_ENV",
 }

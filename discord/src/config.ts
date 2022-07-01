@@ -5,8 +5,15 @@ dotenv.config({
   path: __dirname + `\\..\\.env.${process.env.NODE_ENV}`,
 });
 
-const { BOT_TOKEN, MEAL_API, GITHUB_API, SCHEDULE_API, GUILD_ID, CLIENT_ID } =
-  process.env;
+const {
+  BOT_TOKEN,
+  MEAL_API,
+  GITHUB_API,
+  SCHEDULE_API,
+  GUILD_ID,
+  CLIENT_ID,
+  NODE_ENV,
+} = process.env;
 
 if (
   !BOT_TOKEN ||
@@ -14,7 +21,8 @@ if (
   !GITHUB_API ||
   !SCHEDULE_API ||
   !GUILD_ID ||
-  !CLIENT_ID
+  !CLIENT_ID ||
+  !NODE_ENV
 )
   throw new Error("Missing enviroment variables");
 
@@ -25,6 +33,7 @@ const config: Record<ENV, string> = {
   SCHEDULE_API,
   GUILD_ID,
   CLIENT_ID,
+  NODE_ENV,
 };
 
 export default config;
