@@ -24,7 +24,6 @@ jobs:
     
     - name: create dotenv file
       run: |
-        mkdir discord
         touch ./discord/.env
         echo "${{ secrets.DATA }}" >> ./discord/.env
   
