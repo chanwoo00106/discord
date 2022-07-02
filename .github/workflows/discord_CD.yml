@@ -38,6 +38,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./discord
+        build-contexts: ./discord
         push: true
         tags: badroom/anything:discord
         
