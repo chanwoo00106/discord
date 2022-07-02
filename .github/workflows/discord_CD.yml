@@ -46,11 +46,11 @@ jobs:
     name: Deploy
     runs-on: [ self-hosted, label-go ] # AWS ./configure에서 사용할 label명
     steps:
-      - name: Login to ghcr
-        uses: docker/login-action@v2.0.0
-        with:
-          username: badroom
-          password: ${{ secrets.DOCKER_PW }}
+#       - name: Login to ghcr
+#         uses: docker/login-action@v2.0.0
+#         with:
+#           username: badroom
+#           password: ${{ secrets.DOCKER_PW }}
 
       - name: Docker run
         run: |
