@@ -20,19 +20,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: create dotenv file
+      run: |
+        touch .env
+        echo "${{ secrets.DATA }}" >> .env
+      
+    - name: Docker Login
+      uses: docker/login-action@v2.0.0
+      with:
+        username: badroom
+        password: ${{ secrets.DOCKER_PW }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: ./discord
+        file: ./Dockerfile
+        push: true
+        tags: badroom/anything:discord
+    
     - uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ubuntu
         key: ${{ secrets.SSH_KEY }}
         script: |
-          pm2 kill
-          rm ./discord -rf
-          git clone https://github.com/chanwoo00106/discord.git
-          cd ./discord/discord
-          yarn install --frozen-lockfile
-          touch .env.production
-          echo "${{ secrets.DOTENV }}" >> .env.production
-          yarn build
-          pm2 start build/src/main.js
-          
+          docker stop discord
+          docker rm discord
+          docker rmi badroom/anything:discord
+          docker pull badroom/anything:discord
+          docker run -d --name discord badroom/anything:discord
