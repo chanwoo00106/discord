@@ -37,7 +37,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        workdirectory: ./discord
+        run: ls -a
         push: true
         tags: badroom/anything:discord
     
