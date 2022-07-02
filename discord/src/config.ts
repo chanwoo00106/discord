@@ -5,6 +5,8 @@ dotenv.config({
   path: __dirname + `/../.env.${process.env.NODE_ENV}`,
 });
 
+console.log(__dirname + `/../.env.${process.env.NODE_ENV}`);
+
 const {
   BOT_TOKEN,
   MEAL_API,
