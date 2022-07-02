@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import { ENV } from "src/lib/env";
 
 dotenv.config({
-  path: __dirname + `\\..\\.env.${process.env.NODE_ENV}`,
+  path: __dirname + `/../.env.${process.env.NODE_ENV}`,
 });
 
 const {
