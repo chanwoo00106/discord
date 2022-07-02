@@ -1,0 +1,39 @@
+name: Discord bot CD
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'discord/**'
+      - '.github/**'
+      
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'discord/**'
+      - '.github/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ubuntu
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          rm ./discord -rf
+          git clone https://github.com/chanwoo00106/discord.git
+          cd ./discord/discord
+          yarn install --frozen-lockfile
+          touch .env.production
+          echo "${{ secrets.DOTENV }}" >> .env.production
+          yarn build
+          yarn start
+          
+          
+          
