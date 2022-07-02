@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - run: cd discord
+    - run: cd discord/discord
     - run: ls -a
 
     - name: Use Node.js ${{ matrix.node-version }}
