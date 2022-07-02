@@ -22,6 +22,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - run: cd discord
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -30,6 +32,5 @@ jobs:
         cache: 'yarn'
 
     - run: ls -a
-    - run: cd discord
     - run: yarn install --frozen-lockfile
     - run: yarn build
