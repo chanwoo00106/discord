@@ -21,7 +21,7 @@ jobs:
     
     - name: create dotenv file
       run: |
-        touch ./discord/.env
+        touch ./discord/.env.production
         echo "${{ secrets.DOTENV }}" >> ./discord/.env.production
   
     - name: Docker Setup Buildx
