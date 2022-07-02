@@ -24,8 +24,9 @@ jobs:
     
     - name: create dotenv file
       run: |
-        touch .env
-        echo "${{ secrets.DATA }}" >> .env
+        mkdir discord
+        touch ./discord/.env
+        echo "${{ secrets.DATA }}" >> ./discord/.env
   
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v2.0.0
