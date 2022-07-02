@@ -2,10 +2,10 @@ import * as dotenv from "dotenv";
 import { ENV } from "src/lib/env";
 
 dotenv.config({
-  path: __dirname + `/../.env.${process.env.NODE_ENV}`,
+  path: `${process.env.INIT_CWD?.replace(/\\/g, "/")}/.env.${
+    process.env.NODE_ENV
+  }`,
 });
-
-console.log(__dirname + `/../.env.${process.env.NODE_ENV}`);
 
 const {
   BOT_TOKEN,
