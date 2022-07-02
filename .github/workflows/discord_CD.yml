@@ -35,13 +35,11 @@ jobs:
       with:
         username: badroom
         password: ${{ secrets.DOCKER_PW }}
-        
-    - run: pwd
-    - run: ls -a
 
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
+        workdirectory: ./discord
         push: true
         tags: badroom/anything:discord
     
