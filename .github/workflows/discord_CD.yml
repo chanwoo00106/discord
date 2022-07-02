@@ -33,11 +33,12 @@ jobs:
       with:
         username: badroom
         password: ${{ secrets.DOCKER_PW }}
+        
+    - run: ls /tmp/buildkit-mount3919560717 -a
 
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        run: ls -a
         push: true
         tags: badroom/anything:discord
     
