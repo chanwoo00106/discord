@@ -51,9 +51,8 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_KEY }}
         script: |
-          sudo su
-          docker stop discord
-          docker rm discord
-          docker rmi badroom/anything:discord
-          docker pull badroom/anything:discord
-          docker run -d --name discord badroom/anything:discord
+          sudo docker stop discord
+          sudo docker rm discord
+          sudo docker rmi badroom/anything:discord
+          sudo docker pull badroom/anything:discord
+          sudo docker run -d --name discord badroom/anything:discord
