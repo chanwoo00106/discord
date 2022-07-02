@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v2.0.0
+    
     - name: create dotenv file
       run: |
         touch .env
@@ -34,12 +37,13 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
-        context: ./discord
-        file: ./Dockerfile
+        file: ./discord/Dockerfile
         push: true
         tags: badroom/anything:discord
     
-    - uses: appleboy/ssh-action@master
+    
+    - name: docker run
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ubuntu
