@@ -6,7 +6,9 @@ COPY ./yarn.lock ./package.json ./
 
 RUN yarn install --frozen-lockfile
 
-COPY ./tsconfig.json ./.env.production ./
+COPY ./tsconfig.json ./
+
+COPY ./.env.production ./
 
 COPY ./src ./src
 
