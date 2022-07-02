@@ -7,6 +7,10 @@ dotenv.config({
   }`,
 });
 
+console.log(
+  `${process.env.INIT_CWD?.replace(/\\/g, "/")}/.env.${process.env.NODE_ENV}`
+);
+
 const {
   BOT_TOKEN,
   MEAL_API,
