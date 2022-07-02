@@ -34,7 +34,8 @@ jobs:
         username: badroom
         password: ${{ secrets.DOCKER_PW }}
         
-    - run: ls /tmp/buildkit-mount3919560717 -a
+    - run: pwd
+    - run: ls -a
 
     - name: Build and push
       uses: docker/build-push-action@v2
