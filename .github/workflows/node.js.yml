@@ -23,14 +23,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - run: ls -a
-
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
+        working-directory: ./discord
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
 
     - run: ls -a
+      working-directory: ./discord
+      
     - run: yarn install --frozen-lockfile
+      working-directory: ./discord
+      
     - run: yarn build
+      working-directory: ./discord
