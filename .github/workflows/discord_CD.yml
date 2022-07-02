@@ -26,6 +26,7 @@ jobs:
         username: ubuntu
         key: ${{ secrets.SSH_KEY }}
         script: |
+          pm2 kill
           rm ./discord -rf
           git clone https://github.com/chanwoo00106/discord.git
           cd ./discord/discord
@@ -33,7 +34,5 @@ jobs:
           touch .env.production
           echo "${{ secrets.DOTENV }}" >> .env.production
           yarn build
-          yarn start
-          
-          
+          pm2 start build/src/main.js
           
