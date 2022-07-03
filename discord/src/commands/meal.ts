@@ -4,9 +4,7 @@ import axios from "axios";
 import config from "src/config";
 import { MealType, AtDate } from "src/types";
 import { dateCalc } from "src/lib/dateCalc";
-import { errorEmbed } from "src/lib/errorEmbed";
 import { discordUserImg } from "src/lib/discordUserImg";
-import { LoadingEmbed } from "src/lib/LoadingEmbed";
 
 const meal = ["아침", "점심", "저녁"];
 
@@ -26,35 +24,27 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  await interaction.reply({ embeds: [LoadingEmbed(interaction)] });
-
   const atDate = interaction.options.getString("date") as AtDate;
 
   const [date, month, day] = dateCalc(atDate);
 
-  try {
-    const { data } = await axios.get<MealType>(
-      `${config.MEAL_API}${date.getFullYear()}${month}${day}`
-    );
+  const { data } = await axios.get<MealType>(
+    `${config.MEAL_API}${date.getFullYear()}${month}${day}`
+  );
 
-    const embeds = new MessageEmbed()
-      .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 급식`)
-      .addFields(
-        data.mealServiceDietInfo[1].row.map((dishName, i) => ({
-          name: meal[i],
-          value: dishName.DDISH_NM.replace(/<br\/>/g, "\n"),
-          inline: true,
-        }))
-      )
-      .setFooter({
-        text: interaction.member?.user.username || "인식하지 못했어요.",
-        iconURL: discordUserImg(interaction),
-      })
-      .setTimestamp()
-      .setColor("#fd9644");
-
-    return interaction.editReply({ embeds: [embeds] });
-  } catch (e) {
-    return interaction.editReply({ embeds: [errorEmbed(interaction)] });
-  }
+  return new MessageEmbed()
+    .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 급식`)
+    .addFields(
+      data.mealServiceDietInfo[1].row.map((dishName, i) => ({
+        name: meal[i],
+        value: dishName.DDISH_NM.replace(/<br\/>/g, "\n"),
+        inline: true,
+      }))
+    )
+    .setFooter({
+      text: interaction.member?.user.username || "인식하지 못했어요.",
+      iconURL: discordUserImg(interaction),
+    })
+    .setTimestamp()
+    .setColor("#fd9644");
 }

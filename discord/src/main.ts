@@ -2,6 +2,7 @@ import config from "src/config";
 import { Client } from "discord.js";
 import * as Commands from "src/commands";
 import { commandDeploy } from "./commands-deploy";
+import { LoadingFunc } from "./lib/LoadingFunc";
 
 const commands = Object(Commands);
 
@@ -9,9 +10,8 @@ export const client = new Client({
   intents: ["GUILDS", "GUILD_MEMBERS", "DIRECT_MESSAGES"],
 });
 
-client.once("ready", (client) => {
+client.once("ready", () => {
   console.log("🤖 Discord bot ready!");
-  console.log(client);
   commandDeploy(config.GUILD_ID);
 });
 
@@ -21,10 +21,9 @@ client.on("guildCreate", async (guild) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-  interaction.guild;
   if (!interaction.isCommand()) return;
   const { commandName } = interaction;
-  commands[commandName].execute(interaction, client);
+  await LoadingFunc(commands[commandName].execute, interaction, client);
 });
 
 client.login(config.BOT_TOKEN);

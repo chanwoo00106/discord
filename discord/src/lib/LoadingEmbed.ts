@@ -1,7 +1,7 @@
-import { Interaction, MessageEmbed } from "discord.js";
+import { CommandInteraction, MessageEmbed } from "discord.js";
 import { discordUserImg } from "./discordUserImg";
 
-export const LoadingEmbed = (interaction: Interaction) =>
+export const LoadingEmbed = (interaction: CommandInteraction) =>
   new MessageEmbed()
     .setTitle("Loading...")
     .setDescription("The moment please")
