@@ -23,7 +23,9 @@ jobs:
       run: |
         touch ./discord/.env.production
         echo "${{ secrets.DOTENV }}" >> ./discord/.env.production
-        cat ./discord/.env.production
+        
+    - name: test
+      run: cat ./discord/.env.production
   
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v2.0.0
