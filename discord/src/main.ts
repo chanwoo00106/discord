@@ -9,9 +9,10 @@ export const client = new Client({
   intents: ["GUILDS", "GUILD_MEMBERS", "DIRECT_MESSAGES"],
 });
 
-client.once("ready", () => {
+client.once("ready", (client) => {
   console.log("🤖 Discord bot ready!");
-  if (config.NODE_ENV === "local") commandDeploy(config.GUILD_ID);
+  console.log(client);
+  commandDeploy(config.GUILD_ID);
 });
 
 client.on("guildCreate", async (guild) => {

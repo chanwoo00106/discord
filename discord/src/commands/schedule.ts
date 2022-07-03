@@ -6,6 +6,7 @@ import config from "src/config";
 import { Week } from "src/types";
 import { dateCalc } from "src/lib/dateCalc";
 import { ScheduleType } from "src/types/ScheduleType";
+import { LoadingEmbed } from "src/lib/LoadingEmbed";
 
 export const data = new SlashCommandBuilder()
   .setName("schedule")
@@ -25,6 +26,8 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
+  await interaction.reply({ embeds: [LoadingEmbed(interaction)] });
+
   const atDate = interaction.options.getString("week") as Week;
 
   const [date, month, day] = dateCalc(atDate);
@@ -49,8 +52,8 @@ export async function execute(interaction: CommandInteraction) {
         iconURL: `https://cdn.discordapp.com/avatars/${interaction.member?.user.id}/${interaction.member?.user.avatar}.png`,
       })
       .setTimestamp();
-    return interaction.reply({ embeds: [embeds] });
+    return interaction.editReply({ embeds: [embeds] });
   } catch (e) {
-    return interaction.reply({ embeds: [errorEmbed(interaction)] });
+    return interaction.editReply({ embeds: [errorEmbed(interaction)] });
   }
 }

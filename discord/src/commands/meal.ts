@@ -6,6 +6,7 @@ import { MealType, AtDate } from "src/types";
 import { dateCalc } from "src/lib/dateCalc";
 import { errorEmbed } from "src/lib/errorEmbed";
 import { discordUserImg } from "src/lib/discordUserImg";
+import { LoadingEmbed } from "src/lib/LoadingEmbed";
 
 const meal = ["아침", "점심", "저녁"];
 
@@ -25,6 +26,8 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
+  await interaction.reply({ embeds: [LoadingEmbed(interaction)] });
+
   const atDate = interaction.options.getString("date") as AtDate;
 
   const [date, month, day] = dateCalc(atDate);
@@ -50,8 +53,8 @@ export async function execute(interaction: CommandInteraction) {
       .setTimestamp()
       .setColor("#fd9644");
 
-    return interaction.reply({ embeds: [embeds] });
+    return interaction.editReply({ embeds: [embeds] });
   } catch (e) {
-    return interaction.reply({ embeds: [errorEmbed(interaction)] });
+    return interaction.editReply({ embeds: [errorEmbed(interaction)] });
   }
 }
