@@ -22,7 +22,11 @@ client.on("guildCreate", async (guild) => {
 
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
+
   const { commandName } = interaction;
+
+  if (!commands[commandName] || !commands[commandName].execute) return;
+
   await LoadingFunc(commands[commandName].execute, interaction, client);
 });
 
