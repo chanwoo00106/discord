@@ -3,4 +3,3 @@
 
 .env.local
 .env.production
-firebase.ts

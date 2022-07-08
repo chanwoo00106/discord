@@ -1,12 +1,10 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
 import { CommandInteraction, MessageEmbed } from "discord.js";
-import { errorEmbed } from "src/lib/errorEmbed";
 import config from "src/config";
 import { Week } from "src/types";
 import { dateCalc } from "src/lib/dateCalc";
 import { ScheduleType } from "src/types/ScheduleType";
-import { LoadingEmbed } from "src/lib/LoadingEmbed";
 
 export const data = new SlashCommandBuilder()
   .setName("schedule")

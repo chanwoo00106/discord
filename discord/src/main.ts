@@ -3,6 +3,7 @@ import { Client } from "discord.js";
 import * as Commands from "src/commands";
 import { commandDeploy } from "./commands-deploy";
 import { LoadingFunc } from "./lib/LoadingFunc";
+import { addGuild } from "./firebase/addGuild";
 
 const commands = Object(Commands);
 
@@ -17,7 +18,11 @@ client.once("ready", () => {
 
 client.on("guildCreate", async (guild) => {
   const guildId = guild.commands.permissions.guildId;
-  if (guildId) commandDeploy(guildId);
+
+  if (guildId) {
+    addGuild(guild.name, guildId);
+    commandDeploy(guildId);
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
