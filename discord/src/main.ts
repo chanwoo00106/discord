@@ -3,7 +3,7 @@ import { Client } from "discord.js";
 import * as Commands from "src/commands";
 import { commandDeploy } from "./commands-deploy";
 import { LoadingFunc } from "./lib/LoadingFunc";
-import { addGuild } from "./firebase/addGuild";
+import { addGuild, deleteGuild } from "./firebase/index";
 
 const commands = Object(Commands);
 
@@ -23,6 +23,10 @@ client.on("guildCreate", async (guild) => {
     addGuild(guild.name, guildId);
     commandDeploy(guildId);
   }
+});
+
+client.on("guildDelete", async (guild) => {
+  deleteGuild(guild.name);
 });
 
 client.on("interactionCreate", async (interaction) => {
