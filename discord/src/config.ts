@@ -26,6 +26,7 @@ const {
   MEASUREMENT_ID,
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
+  MASTER_ID,
 } = process.env;
 
 if (
@@ -42,7 +43,8 @@ if (
   !AUTH_DOMAIN ||
   !MEASUREMENT_ID ||
   !STORAGE_BUCKET ||
-  !MESSAGING_SENDER_ID
+  !MESSAGING_SENDER_ID ||
+  !MASTER_ID
 )
   throw new Error("Missing enviroment variables");
 
@@ -61,6 +63,7 @@ const config: Record<ENV, string> = {
   MEASUREMENT_ID,
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
+  MASTER_ID,
 };
 
 export default config;
