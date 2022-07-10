@@ -1,1 +1,1 @@
-export * as updateCommends from "./updateCommends";
+export * as updateCommands from "./updateCommands";
