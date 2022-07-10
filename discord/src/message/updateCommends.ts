@@ -13,11 +13,13 @@ export async function execute(message: Message) {
 
     const data = await findAllGuilds();
 
-    if (!data) return;
+    console.log(data);
 
-    Object.keys(data).map((i) => {
-      commandDeploy(data[i]);
-    });
+    // if (!data) return;
+    //
+    // Object.keys(data).map((i) => {
+    //   commandDeploy(data[i]);
+    // });
   } catch (e) {
     console.log(e);
   }

@@ -1,10 +1,10 @@
 import { updateDoc, doc, deleteField } from "firebase/firestore/lite";
 import { db } from "src/firebase";
 
-export async function deleteGuild(guildName: string) {
+export async function deleteGuild(guildId: string) {
   try {
     await updateDoc(doc(db, "discord", "guilds"), {
-      [guildName]: deleteField(),
+      [guildId]: deleteField(),
     });
   } catch (e) {
     console.log(e);

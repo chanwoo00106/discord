@@ -39,7 +39,9 @@ client.on("guildCreate", async (guild) => {
 });
 
 client.on("guildDelete", async (guild) => {
-  deleteGuild(guild.name);
+  const guildId = guild.commands.permissions.guildId;
+
+  if (guildId) deleteGuild(guildId);
 });
 
 client.on("interactionCreate", async (interaction) => {
