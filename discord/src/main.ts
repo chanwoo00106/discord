@@ -15,7 +15,7 @@ export const client = new Client({
 
 client.once("ready", () => {
   console.log("🤖 Discord bot ready!");
-  // commandDeploy(config.GUILD_ID);
+  commandDeploy(config.GUILD_ID);
 });
 
 client.on("messageCreate", async (message) => {

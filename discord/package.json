@@ -28,6 +28,8 @@
     "discord-api-types": "^0.35.0",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
-    "firebase": "^9.8.4"
+    "firebase": "^9.8.4",
+    "graphql": "^16.5.0",
+    "graphql-request": "^4.3.0"
   }
 }
