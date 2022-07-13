@@ -17,7 +17,7 @@ export const data = new SlashCommandBuilder()
         { name: "월", value: "Mon" },
         { name: "화", value: "Tue" },
         { name: "수", value: "Wed" },
-        { name: "목", value: "Tue" },
+        { name: "목", value: "Thu" },
         { name: "금", value: "Fri" }
       )
       .setRequired(true)
