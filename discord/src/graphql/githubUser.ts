@@ -1,4 +1,6 @@
-export const githubUser = (id: string) => `query {
+import { gql } from "graphql-request";
+
+export const githubUser = (id: string) => gql`query {
 	user(login:"${id}") {
     name
       login

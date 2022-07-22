@@ -10,7 +10,7 @@ const commands = Object(Commands);
 const messages = Object(Messages);
 
 export const client = new Client({
-  intents: ["GUILDS", "GUILD_MEMBERS", "DIRECT_MESSAGES", "GUILD_MESSAGES"],
+  intents: ["Guilds", "GuildMembers", "DirectMessages", "GuildMessages"],
 });
 
 client.once("ready", () => {
@@ -45,7 +45,7 @@ client.on("guildDelete", async (guild) => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
+  if (!interaction.isChatInputCommand()) return;
 
   const { commandName } = interaction;
 

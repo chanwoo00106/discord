@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, MessageEmbed } from "discord.js";
+import { Client, CommandInteraction, EmbedBuilder } from "discord.js";
 import { errorEmbed } from "./errorEmbed";
 import { LoadingEmbed } from "./LoadingEmbed";
 
@@ -6,7 +6,7 @@ export async function LoadingFunc(
   execute: (
     interaction: CommandInteraction,
     client: Client
-  ) => Promise<MessageEmbed>,
+  ) => Promise<EmbedBuilder>,
   interaction: CommandInteraction,
   client: Client
 ) {

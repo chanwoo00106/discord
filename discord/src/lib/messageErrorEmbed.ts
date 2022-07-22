@@ -1,7 +1,7 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, EmbedBuilder } from "discord.js";
 
 export const messageErrorEmbed = (message: Message, guildId: string) =>
-  new MessageEmbed()
+  new EmbedBuilder()
     .setTitle(`${guildId} 실패`)
     .setDescription("command 등록에 실패했습니다")
     .setFooter({

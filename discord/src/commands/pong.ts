@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("ping")
   .setDescription("Replies with pong");
 
 export async function execute(interaction: CommandInteraction) {
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setTitle("Pong!")
     .setDescription("This is Test")
     .setColor("#FDA7DF")

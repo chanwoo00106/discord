@@ -2,7 +2,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import config from "src/config";
 import * as Commands from "src/commands";
-import { Message, MessageEmbed } from "discord.js";
+import { Message, EmbedBuilder } from "discord.js";
 import { messageErrorEmbed } from "./lib/messageErrorEmbed";
 
 export function commandDeploy(
@@ -24,7 +24,7 @@ export function commandDeploy(
       console.log("Successfully registered application commands.");
 
       if (guildName) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
           .setTitle(`${guildName} 성공`)
           .setDescription("command 등록에 성공했습니다")
           .setFooter({

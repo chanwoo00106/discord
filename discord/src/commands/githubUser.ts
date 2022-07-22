@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { githubUser } from "src/graphql/githubUser";
 import github from "src/lib/github";
 import { Github } from "src/types";
@@ -12,13 +12,13 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  const id = interaction.options.getString("id");
+  const id = interaction.options.data[0].value;
 
-  if (!id) return;
+  if (typeof id !== "string") return;
 
   const { user } = await github.request<Github>(githubUser(id));
 
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setColor("#f6e58d")
     .setTitle(user.name || user.login)
     .setURL(user.url)

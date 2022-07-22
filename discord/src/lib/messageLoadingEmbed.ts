@@ -1,7 +1,7 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, EmbedBuilder } from "discord.js";
 
 export const messageLoadingEmbed = (message: Message) =>
-  new MessageEmbed()
+  new EmbedBuilder()
     .setTitle("Loading...")
     .setDescription("The moment please")
     .setFooter({

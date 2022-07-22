@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import axios from "axios";
 import config from "src/config";
 import { MealType, AtDate } from "src/types";
@@ -24,7 +24,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  const atDate = interaction.options.getString("date") as AtDate;
+  const atDate = interaction.options.data[0].value as AtDate;
 
   const [date, month, day] = dateCalc(atDate);
 
@@ -32,7 +32,7 @@ export async function execute(interaction: CommandInteraction) {
     `${config.MEAL_API}${date.getFullYear()}${month}${day}`
   );
 
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 급식`)
     .addFields(
       data.mealServiceDietInfo[1].row.map((dishName, i) => ({

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
-import { CommandInteraction, MessageEmbed } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import config from "src/config";
 import { Week } from "src/types";
 import { dateCalc } from "src/lib/dateCalc";
@@ -24,7 +24,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
-  const atDate = interaction.options.getString("week") as Week;
+  const atDate = interaction.options.data[0].value as Week;
 
   const [date, month, day] = dateCalc(atDate);
 
@@ -36,7 +36,7 @@ export async function execute(interaction: CommandInteraction) {
 
   const result = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
 
-  return new MessageEmbed()
+  return new EmbedBuilder()
     .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 시간표`)
     .setFields(
       ...result?.map((i, index) => ({ name: `${index + 1}교시`, value: i }))
