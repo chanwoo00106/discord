@@ -23,6 +23,8 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
   );
 
+const Weeks = { Mon: "월", Tue: "화", Wed: "수", Thu: "목", Fri: "금" };
+
 export async function execute(interaction: CommandInteraction) {
   const atDate = interaction.options.data[0].value as Week;
 
@@ -37,7 +39,9 @@ export async function execute(interaction: CommandInteraction) {
   const result = data.hisTimetable[1].row?.map((i) => i.ITRT_CNTNT);
 
   return new EmbedBuilder()
-    .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 시간표`)
+    .setTitle(
+      `${date.getFullYear()}년 ${month}윌 ${day}일 ${Weeks[atDate]}요일 시간표`
+    )
     .setFields(
       ...result?.map((i, index) => ({ name: `${index + 1}교시`, value: i }))
     )
