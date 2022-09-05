@@ -23,6 +23,8 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
   );
 
+const Weeks = ["일", "월", "화", "수", "목", "금", "토", "일"];
+
 export async function execute(interaction: CommandInteraction) {
   const atDate = interaction.options.data[0].value as AtDate;
 
@@ -33,7 +35,11 @@ export async function execute(interaction: CommandInteraction) {
   );
 
   return new EmbedBuilder()
-    .setTitle(`${date.getFullYear()}년 ${month}윌 ${day}일 급식`)
+    .setTitle(
+      `${date.getFullYear()}년 ${month}윌 ${day}일 ${
+        Weeks[date.getDay()]
+      }요일 급식`
+    )
     .addFields(
       data.mealServiceDietInfo[1].row.map((dishName, i) => ({
         name: meal[i],
